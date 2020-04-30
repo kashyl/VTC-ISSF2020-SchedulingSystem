@@ -10,6 +10,8 @@ using ISSF2020.Models;
 using ISSF2020.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Text.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace ISSF2020
 {
@@ -53,6 +55,19 @@ namespace ISSF2020
                 return value;
             });
             services.AddSingleton<ScheduleService>();
+
+            // REGIONAL WEATHER DATA
+            services.Configure<RegionalWeatherDatabaseSettings>(
+                Configuration.GetSection(nameof(RegionalWeatherDatabaseSettings)));
+
+            services.AddSingleton<IRegionalWeatherDatabaseSettings>(sp =>
+            {
+                var value = sp.GetRequiredService<IOptions<RegionalWeatherDatabaseSettings>>().Value;
+                value.ConnectionString = $"mongodb+srv://{Configuration["DB_USER"]}:{Configuration["DB_PASS"]}@{Configuration["DB_CLUSTER"]}?retryWrites=true&w=majority";
+
+                return value;
+            });
+            services.AddSingleton<RegionalWeatherService>();
 
             services.AddDistributedMemoryCache();
 

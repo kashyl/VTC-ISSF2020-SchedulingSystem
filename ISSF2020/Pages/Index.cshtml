@@ -12,6 +12,35 @@
         <h3> Current user: ViewData["User"]</h3>
         <a href="/account/logout">Logout</a>
         }-->
+        <hr />
+
+        @if (ViewData["WeatherData"] != null)
+        {
+            var weatherData = (ISSF2020.Models.RegionalWeatherModel)ViewData["WeatherData"];
+
+            <div class="list-group-item list-group-item-action flex-column align-items-start mb-3">
+                <div class="d-flex w-100 justify-content-center mb-2">
+                    <h5 class="mb-1 text-info">Current Regional Weather</h5>
+                </div>
+
+                <p class="d-flex w-100 justify-content-around mb-1">
+
+                    <span><small class="text-muted">Temperature:</small> @weatherData.Temperature °C</span>
+
+                    <span><small class="text-muted">Humidity:</small> @weatherData.Humidity %</span>
+
+                    <span><small class="text-muted">Description:</small> @weatherData.Description</span>
+
+                </p>
+
+                <small class="text-info">
+                    <span class="text-muted">Last update:</span>
+                    @weatherData.LastUpdate
+                    <span class="text-muted">@weatherData.Location Time</span>
+                </small>
+
+            </div>
+        }
 
         <br />
         <hr />
